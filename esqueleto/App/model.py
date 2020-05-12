@@ -67,12 +67,12 @@ def Add_station_list(catalog, row):
     if map.contains(catalog['map_station'], row['city']) == None:
         value= lt.newList()
         map.put(catalog['map_station'],row['city'],value)
-        dic={row['id']:row['dock_count']}
+        dic={'city_id':row['id'],'dock_count':row['dock_count'], 'city':row['city']}
         lista= map.get(catalog['map_station'],row['city'])
         lt.addFirst(lista, dic)
     else:
         lista= map.get(catalog['map_station'],row['city'])
-        dic={row['id']:row['dock_count']}
+        dic={'city_id':row['id'],'dock_count':row['dock_count'], 'city':row['city']}
         lt.addFirst(lista,dic)
 
 def ordenar_listas(catalog):
@@ -80,7 +80,6 @@ def ordenar_listas(catalog):
     for i in range(1,lt.size(ciudades)+1):
         key= lt.getElement(ciudades, i)
         lista= map.get(catalog['map_station'],key)
-        less= 
         merg.mergesort(lista, less_fuction)
 
 
@@ -94,14 +93,8 @@ def compareByKey (key, element):
     return  (key == element['key'] )  
 
 def less_fuction(el_1, el_2):
-    for x in el_1:
-        tamaño_1 = x['dock_count']
-    for x in el_2:
-        tamaño_2 = x['dock_count']
 
-    if tamaño_1 < tamaño_2:
-        return el_1
-    else:
-        return el_2
+    return el_1['dock_count'] < el_2['dock_count']
+        
     
 
