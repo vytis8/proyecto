@@ -63,6 +63,7 @@ def loadLibraries (catalog, sep=','):
             #model.addLibraryNode (catalog, row)
             #model.addLibraryEdge (catalog, row)
             model.Add_station_list(catalog,row)
+    model.ordenar_listas(catalog)
     t1_stop = process_time() #tiempo final
     print("Tiempo de ejecución carga de grafo de bibliotecas:",t1_stop-t1_start," segundos")   
 
