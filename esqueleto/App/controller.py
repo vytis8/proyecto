@@ -54,14 +54,15 @@ def loadLibraries (catalog, sep=','):
     Por cada para de bibliotecas, se almacena la distancia en kilometros entre ellas.
     """
     t1_start = process_time() #tiempo inicial
-    libsFile = cf.data_dir + 'GoodReads/libraries_edges.csv'
+    libsFile = cf.data_dir + 'GoodReads/Station.csv'
     dialect = csv.excel()
     dialect.delimiter=sep
     with open(libsFile, encoding="utf-8-sig") as csvfile:
         spamreader = csv.DictReader(csvfile, dialect=dialect)
         for row in spamreader:
-            model.addLibraryNode (catalog, row)
-            model.addLibraryEdge (catalog, row)
+            #model.addLibraryNode (catalog, row)
+            #model.addLibraryEdge (catalog, row)
+            model.Add_station_list(catalog,row)
     t1_stop = process_time() #tiempo final
     print("Tiempo de ejecución carga de grafo de bibliotecas:",t1_stop-t1_start," segundos")   
 

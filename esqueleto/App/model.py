@@ -27,6 +27,7 @@ from ADT import map as map
 from ADT import list as lt
 from DataStructures import listiterator as it
 from datetime import datetime
+from Sorting import mergesort as merg
 
 """
 Se define la estructura de un catálogo de libros.
@@ -42,6 +43,7 @@ def newCatalog():
     """
     libgraph = g.newGraph(7235,compareByKey,directed=True)
     catalog = {'librariesGraph':libgraph}    
+    catalog['map_station']= map.newMap(numelements=11, comparefunction=compareByKey)
     return catalog
 
 
@@ -61,9 +63,45 @@ def addLibraryEdge  (catalog, row):
     g.addEdge (catalog['librariesGraph'], row['ID_src'], row['ID_dst'], float(row['dist']))
 
 
+def Add_station_list(catalog, row):
+    if map.contains(catalog['map_station'], row['city']) == None:
+        value= lt.newList()
+        map.put(catalog['map_station'],row['city'],value)
+        dic={row['id']:row['dock_count']}
+        lista= map.get(catalog['map_station'],row['city'])
+        lt.addFirst(lista, dic)
+    else:
+        lista= map.get(catalog['map_station'],row['city'])
+        dic={row['id']:row['dock_count']}
+        lt.addFirst(lista,dic)
+
+def ordenar_listas(catalog):
+    ciudades= map.keySet(catalog['map_station'])
+    for i in range(1,lt.size(ciudades)+1):
+        key= lt.getElement(ciudades, i)
+        lista= map.get(catalog['map_station'],key)
+        less= 
+        merg.mergesort(lista, less_fuction)
+
+
+
+
+
     
 # Funciones de comparacion
 
 def compareByKey (key, element):
     return  (key == element['key'] )  
+
+def less_fuction(el_1, el_2):
+    for x in el_1:
+        tamaño_1 = x['dock_count']
+    for x in el_2:
+        tamaño_2 = x['dock_count']
+
+    if tamaño_1 < tamaño_2:
+        return el_1
+    else:
+        return el_2
+    
 
