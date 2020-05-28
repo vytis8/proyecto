@@ -29,7 +29,7 @@ from DataStructures import listiterator as it
 from datetime import datetime
 from Sorting import mergesort as merg
 from ADT import orderedmap as tree
-from Adt import dijkstra as dj
+from DataStructures import dijkstra as dj
 
 """
 Se define la estructura de un catálogo de libros.
@@ -43,6 +43,7 @@ def newCatalog():
     """
     Inicializa el catálogo y retorna el catalogo inicializado.
     """   
+    catalog= {}
     catalog['map_station']= map.newMap(numelements=11, comparefunction=compareByKey)
     catalog['list_temepratura']=lt.newList(datastructure='ARRAY_LIST')
     catalog['map_city_req2']= map.newMap(comparefunction=compareByKey)
@@ -83,6 +84,10 @@ def add_day_temperature(catalog, row):
     elemento= {'dia':row['date'],
     'temperature':row['mean_temperature_f']}
     lt.addFirst(catalog['list_temepratura'],elemento)
+
+
+
+    
 
 def Add_map_tree(catalogo, row):
     city_zipc= row['zip_code']
@@ -193,6 +198,19 @@ def req_3(catalog, dias):
         res={'posicion':pos, 'fecha':fecha, 'temperatura':temperatura}
         lt.addFirst(respuesta, res)
     return respuesta
+
+
+def camino_dj(catalog, start, end):
+    graph= catalog['grafo']
+    search= dj.newDijkstra(graph, start)
+    mapa= search['visitedMap']
+    lista= lt.newList()
+    current= end
+    while current != start:
+        elemento= map.get(mapa,current)
+        lt.addFirst(lista, {'vertice':elemento['edgeTo'], 'distancia':elemento['distTo'])
+        current= elemento['edgeTo']
+    return lista
 
 
 
