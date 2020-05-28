@@ -53,19 +53,14 @@ def loadLibraries (catalog, sep=','):
     Carga las bibliotecas del archivo.
     Por cada para de bibliotecas, se almacena la distancia en kilometros entre ellas.
     """
-    t1_start = process_time() #tiempo inicial
     libsFile = cf.data_dir + 'GoodReads/Station.csv'
     dialect = csv.excel()
     dialect.delimiter=sep
     with open(libsFile, encoding="utf-8-sig") as csvfile:
         spamreader = csv.DictReader(csvfile, dialect=dialect)
         for row in spamreader:
-            #model.addLibraryNode (catalog, row)
-            #model.addLibraryEdge (catalog, row)
             model.Add_station_list(catalog,row)
-    model.ordenar_listas_req_1(catalog)
-    t1_stop = process_time() #tiempo final
-    print("Tiempo de ejecución carga de grafo de bibliotecas:",t1_stop-t1_start," segundos")   
+    model.ordenar_listas_req_1(catalog) 
 
 def load_weather(catalog, sep=','):
     libsFile = cf.data_dir + 'GoodReads/weather.csv'
@@ -87,6 +82,17 @@ def load_dates(catalog, sep=','):
         for row in spamreader:
             model.Add_map_tree(catalog, row)
             model.date_tally(catalog, row)
+
+
+def load_graph(catalog, sep=','):
+    libsFile = cf.data_dir + 'GoodReads/tripday_edges.csv'
+    dialect = csv.excel()
+    dialect.delimiter=sep
+    with open(libsFile, encoding="utf-8-sig") as csvfile:
+        spamreader = csv.DictReader(csvfile, dialect=dialect)
+        for row in spamreader:
+            model.addstationNode(catalog, row)
+            model.addstationEdge(catalog, row)
             
     
     
@@ -103,9 +109,12 @@ def loadData (catalog):
     """
     Carga los datos de los archivos en la estructura de datos
     """
+    t1_start = process_time() #tiempo inicial
     loadLibraries(catalog)
     load_dates(catalog)
     load_weather(catalog)
+    t1_stop = process_time() #tiempo final
+    print("Tiempo de ejecución carga es de:",t1_stop-t1_start," segundos") 
     pass    
 
 def req_1(catalog, ciudad):

@@ -29,6 +29,7 @@ from DataStructures import listiterator as it
 from datetime import datetime
 from Sorting import mergesort as merg
 from ADT import orderedmap as tree
+from Adt import dijkstra as dj
 
 """
 Se define la estructura de un catálogo de libros.
@@ -41,30 +42,29 @@ y otra para géneros
 def newCatalog():
     """
     Inicializa el catálogo y retorna el catalogo inicializado.
-    """
-    libgraph = g.newGraph(7235,compareByKey,directed=True)
-    catalog = {'librariesGraph':libgraph}    
+    """   
     catalog['map_station']= map.newMap(numelements=11, comparefunction=compareByKey)
     catalog['list_temepratura']=lt.newList(datastructure='ARRAY_LIST')
     catalog['map_city_req2']= map.newMap(comparefunction=compareByKey)
     catalog['fecha_tally_viajes']=map.newMap(numelements=737, comparefunction=compareByKey)
+    catalog['grafo']=g.newGraph(7235,compareByKey,directed=True)
     return catalog
 
 
-def addLibraryNode (catalog, row):
+def addstationNode (catalog, row):
     """
     Adiciona un nodo para almacenar una biblioteca
     """
-    if not g.containsVertex(catalog['librariesGraph'], row['ID_src']):
-        g.insertVertex (catalog['librariesGraph'], row['ID_src'])
-    if not g.containsVertex(catalog['librariesGraph'], row['ID_dst']):
-        g.insertVertex (catalog['librariesGraph'], row['ID_dst'])
+    if not g.containsVertex(catalog['grafo'], row['src']):
+        g.insertVertex (catalog['grafo'], row['src'])
+    if not g.containsVertex(catalog['grafo'], row['dst']):
+        g.insertVertex (catalog['grafo'], row['dst'])
 
-def addLibraryEdge  (catalog, row):
+def addstationEdge  (catalog, row):
     """
     Adiciona un enlace entre bibliotecas
     """
-    g.addEdge (catalog['librariesGraph'], row['ID_src'], row['ID_dst'], float(row['dist']))
+    g.addEdge (catalog['grafo'], row['src'], row['dst'], float(row['duration']))
 
 
 def Add_station_list(catalog, row):
