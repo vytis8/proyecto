@@ -200,7 +200,7 @@ def req_3(catalog, dias):
     return respuesta
 
 
-def camino_dj(catalog, start, end):
+'''def camino_dj(catalog, start, end):
     graph= catalog['grafo']
     search= dj.newDijkstra(graph, start)
     mapa= search['visitedMap']
@@ -211,7 +211,7 @@ def camino_dj(catalog, start, end):
         lt.addFirst(lista, {'vertice':elemento['edgeTo'], 'distancia':elemento['distTo'])
         current= elemento['edgeTo']
     return lista
-
+'''
 
 
 

@@ -77,16 +77,25 @@ def main():
         elif int(inputs[0])==2:
             city= input('porfavor indicque el codigo postal de la ciudad que desea consultar')
             res= controller.req_1(catalog, city)
+            for i in range(1, lt.size(res)):
+                print(lt.getElement(res,i))
         elif int(inputs[0]) == 3:
             fecha = input("Ingrese la fecha de inicio y terminacion de la siguiente manera, %m/%d/%Y %m/%d/%Y: ")
-            ans= controller.req_2(catalog, fechas)            
+            ans= controller.req_2(catalog, fecha) 
+            print(ans)           
         elif int(inputs[0]) == 4:
             cantidad_dias = input("Ingrese la cantidad de días a consultar: ")
-            respuesta= controller.req_3(catalog,cantidad_dias)
+            r= controller.req_3(catalog,cantidad_dias)
+            for i in range(1, lt.size(r)):
+                print(lt.getElement(r,i))
         elif int(inputs[0]) == 5:
-            estacion1 = input("Ingrese la estación de origen: ")
-            estacion2 = input("Ingrese la estación destino: ")
-            fecha = input("Ingrese la fecha a consultar: ")
+            estacion1 = input("Ingrese la estación-fecha de origen: ")
+            estacion2 = input("Ingrese la estación-fecha destino: ")
+            respuesta= controller.req_4(catalog, estacion1, estacion2)
+            for i in range(1, lt.size(respuesta)):
+                print(lt.getElement(respuesta,i))
+            print(respuesta)
+            
         else:
             sys.exit(0)
     sys.exit(0)

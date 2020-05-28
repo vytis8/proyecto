@@ -133,12 +133,18 @@ def req_2(catalog,fechas):
     print("la consulta se demoro:",t1_stop-t1_start," segundos")
     return respuesta
 
-def req_3(catlog, day):
+def req_3(catalog, day):
     t1_start = process_time()
     respuesta =model.req_3(catalog, day)
     t1_stop = process_time() #tiempo final
     print("la consulta se demoro:",t1_stop-t1_start," segundos")
     return respuesta
 
+def req_4(catlog, start, end):
+    t1_start = process_time()
+    respuesta =model.camino_dj(catalog, start, end)
+    t1_stop = process_time() #tiempo final
+    print("la consulta se demoro:",t1_stop-t1_start," segundos")
+    return respuesta
 
 

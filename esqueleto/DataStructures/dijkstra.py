@@ -13,7 +13,7 @@ def newDijkstra(graph, s):
     """
     Crea una busqueda Dijkstra para un digrafo y un vertice origen
     """
-    prime = nextPrime (g.numVertex(graph) * 2)
+    prime = g.numVertex(graph) * 2
     search = {'graph':graph, 's':s, 'visitedMap':None, 'minpq':None}
     search['visitedMap'] = map.newMap(numelements=prime, maptype='PROBING', comparefunction=graph['comparefunction'])
     vertices = g.vertices (graph)
@@ -22,7 +22,7 @@ def newDijkstra(graph, s):
         vert =  it.next (itvertices)
         map.put (search['visitedMap'], vert, {'marked':False,'edgeTo':None,'distTo':math.inf})
     map.put(search['visitedMap'], s, {'marked':True,'edgeTo':None,'distTo':0})
-    pq = minpq.newIndexMinPQ(g.numVertex(graph), comparenames)
+    pq = minpq.newIndexMinPQ(g.numVertex(graph), compareByKey)
     search['minpq'] = pq
     minpq.insert(search['minpq'], s, 0)
     while not minpq.isEmpty(search['minpq']):
@@ -51,3 +51,6 @@ def relax(search, edge):
             minpq.decreasePriority(search['minpq'], w, distToW)
         else:
             minpq.insert(search['minpq'], w, distToW)
+
+def compareByKey (key, element):
+    return  (key == element['key'] )
