@@ -53,7 +53,7 @@ def loadLibraries (catalog, sep=','):
     Carga las bibliotecas del archivo.
     Por cada para de bibliotecas, se almacena la distancia en kilometros entre ellas.
     """
-    libsFile = cf.data_dir + 'GoodReads/Station.csv'
+    libsFile = cf.data_dir + 'GoodReads/station.csv'
     dialect = csv.excel()
     dialect.delimiter=sep
     with open(libsFile, encoding="utf-8-sig") as csvfile:
