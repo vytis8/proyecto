@@ -45,8 +45,9 @@ def newCatalog():
     libgraph = g.newGraph(7235,compareByKey,directed=True)
     catalog = {'librariesGraph':libgraph}    
     catalog['map_station']= map.newMap(numelements=11, comparefunction=compareByKey)
-    catalog['list_temepratura']=lt.newList()
+    catalog['list_temepratura']=lt.newList(datastructure='ARRAY_LIST')
     catalog['map_city_req2']= map.newMap(comparefunction=compareByKey)
+    catalog['fecha_tally_viajes']=map.newMap(numelements=737, comparefunction=compareByKey)
     return catalog
 
 
@@ -80,10 +81,10 @@ def Add_station_list(catalog, row):
 
 def add_day_temperature(catalog, row):
     elemento= {'dia':row['date'],
-    'mean_temperature_f':row['mean_temperature_f']}
+    'temperature':row['mean_temperature_f']}
     lt.addFirst(catalog['list_temepratura'],elemento)
 
-def Add_map_tree(catlog, row):
+def Add_map_tree(catalogo, row):
     city_zipc= row['zip_code']
     lista_zip= city_zipc.split()
     city= lista_zip[2]
@@ -108,6 +109,18 @@ def Add_map_tree(catlog, row):
         tree.put(value, dic['date'], dic, compareByKey)
         map.put(catalog['map_city_req2'],city, value)
 
+def date_tally(catalog, row):
+    mapa= catalog['fecha_tally_viajes']
+    formato= '%m/%d/%Y'
+    fecha= strToDate(row['start_date'],formato)
+
+    date= map.get(mapa, fecha)
+    if date:
+        date['total']+=1
+    else:
+        dic={'fehca':fecha, 'total':1}
+        map.put(mapa, fecha, dic)
+
 def ordenar_listas_req1(catalog):
     ciudades= map.keySet(catalog['map_station'])
     for i in range(1,lt.size(ciudades)+1):
@@ -119,26 +132,67 @@ def get_first_3(catalog, city_code):
     ciudad = map.get(catalog['map_station'], city_code)
     respuesta = lt.newList()
     for i in range (1, 3):
-        stacion=lt.getElement(catalog['map_sation'],i)
-        dic= {'ciudad':satcion['name'],
-        'dock_count':stacion['dock_count']}
+        estacion=lt.getElement(ciudad,i)
+        dic= {'ciudad':estacion['name'],
+        'dock_count':estacion['dock_count']}
         lt.addLast(respuesta, dic)
     return respuesta
 
+def req2(catalogo, rango):
+    dat= rango.split(' ')
+    respuesta={}
+    fecha_1= strToDate(dat[0], '%m/%d/%Y')
+    fecha_2=strToDate(dat[1],'%m/%d/%Y')
+    ciudades= map.keySet(catalogo['map_city_req2'])
+    for i in range (1, lt.size(ciudades)):
+        arbol= lt.getElement(ciudades, i)
+        rango_set= tree.valueRange(arbol, fecha_1, fecha_2, compareByKey)
+        for z in range (1, lt.size(rango_set)):
+            dic= lt.getElement(rango_set, z)
+            respuesta[str(i)] += dic['viajes']
+    return respuesta
+
+
+    
 
 
 def ordenar_lista_req3(catalog):
     merg.mergesort(catalog['list_temepratura'],less_fuction_req3)
 
-def cargar_viajes_dia():
-    pass
+def cargar_viajes_dia(catalog):
+    lista_tem = catalog['list_temepratura']
+    mapa= catalog['fecha_tally_viajes']
+    for i in range(1, lt.size(lista_tem)):
+        elemento= lt.getElement(lista_tem, i)
+        fecha= elemento['dia']
+        fech_map= map.get(mapa, fecha)
+        elemento['total']=fech_map['total']
+        
+
+    
 
 
 def req_3(catalog, dias):
     lista= catalog['list_temepratura']
-    size 
-    first= lt.subList(lista, 1, dias)
-    last= l
+    respuesta= lt.newList()
+
+    for i in range(1, dias):
+        dic= lt.getElement(lista, i)
+        fecha=dic['dia']
+        pos= i
+        temperatura=dic['temperature']
+        res={'posicion':pos, 'fecha':fecha, 'temperatura':temperatura}
+        lt.addFirst(respuesta, res)
+
+    tamaño= lt.size(lista)
+    for i in range(tamaño, tamaño-int(dias)):
+        dic= lt.getElement(lista, i)
+        fecha=dic['dia']
+        pos= -i
+        temperatura=dic['temperature']
+        res={'posicion':pos, 'fecha':fecha, 'temperatura':temperatura}
+        lt.addFirst(respuesta, res)
+    return respuesta
 
 
 
@@ -153,7 +207,7 @@ def less_fuction_req1(el_1, el_2):
     return el_1['dock_count'] < el_2['dock_count']
         
 def less_fuction_req3(el_1, el_2):
-    return el_1['mean_temperature_f'] < el_2['mean_temperature_f']
+    return el_1['temperature'] < el_2['temperature']
 
 def strToDate(date_string, format):
     

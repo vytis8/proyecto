@@ -63,12 +63,33 @@ def loadLibraries (catalog, sep=','):
             #model.addLibraryNode (catalog, row)
             #model.addLibraryEdge (catalog, row)
             model.Add_station_list(catalog,row)
-    model.ordenar_listas(catalog)
+    model.ordenar_listas_req_1(catalog)
     t1_stop = process_time() #tiempo final
     print("Tiempo de ejecución carga de grafo de bibliotecas:",t1_stop-t1_start," segundos")   
 
-
-
+def load_weather(catalog, sep=','):
+    libsFile = cf.data_dir + 'GoodReads/weather.csv'
+    dialect = csv.excel()
+    dialect.delimiter=sep
+    with open(libsFile, encoding="utf-8-sig") as csvfile:
+        spamreader = csv.DictReader(csvfile, dialect=dialect)
+        for row in spamreader:
+            model.add_day_temperature(catalog,row)
+    model.ordenar_lista_req3(catalog)
+    model.cargar_viajes_dia(catalog)
+    
+def load_dates(catalog, sep=','):
+    libsFile = cf.data_dir + 'GoodReads/trip.csv'
+    dialect = csv.excel()
+    dialect.delimiter=sep
+    with open(libsFile, encoding="utf-8-sig") as csvfile:
+        spamreader = csv.DictReader(csvfile, dialect=dialect)
+        for row in spamreader:
+            model.Add_map_tree(catalog, row)
+            model.date_tally(catalog, row)
+            
+    
+    
 def initCatalog ():
     """
     Llama la funcion de inicializacion del catalogo del modelo.
@@ -83,10 +104,32 @@ def loadData (catalog):
     Carga los datos de los archivos en la estructura de datos
     """
     loadLibraries(catalog)
+    load_dates(catalog)
+    load_weather(catalog)
     pass    
 
-# Funciones llamadas desde la vista y enviadas al modelo
+def req_1(catalog, ciudad):
+    t1_start = process_time()
+    respuesta =model.get_first_3(catalog, ciudad)
+    t1_stop = process_time() #tiempo final
+    print("la consulta se demoro:",t1_stop-t1_start," segundos")
+    return respuesta
 
+
+
+def req_2(catalog,fechas):
+    t1_start = process_time()
+    respuesta =model.req2(catalogo, fechas)
+    t1_stop = process_time() #tiempo final
+    print("la consulta se demoro:",t1_stop-t1_start," segundos")
+    return respuesta
+
+def req_3(catlog, day):
+    t1_start = process_time()
+    respuesta =model.req_3(catalog, day)
+    t1_stop = process_time() #tiempo final
+    print("la consulta se demoro:",t1_stop-t1_start," segundos")
+    return respuesta
 
 
 
