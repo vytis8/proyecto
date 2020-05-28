@@ -76,6 +76,17 @@ def main():
             loadData (catalog)
         elif int(inputs[0])==2:
             pass
+        elif int(inputs[0]) == 3:
+            fecha1 = input("Ingrese la fecha de inicio: ")
+            fecha2 = input("Ingrese la fecha de terminación: ")
+        elif int(inputs[0]) == 4:
+            dia = input("Ingrese la fecha de inicio: ")
+            cantidad_dias = input("Ingrese la cantidad de días a consultar: ")
+            temp = input("Ingrese la temperatura a consultar: ")
+        elif int(inputs[0]) == 5:
+            estacion1 = input("Ingrese la estación de origen: ")
+            estacion2 = input("Ingrese la estación destino: ")
+            fecha = input("Ingrese la fecha a consultar: ")
         else:
             sys.exit(0)
     sys.exit(0)
